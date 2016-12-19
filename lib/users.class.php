@@ -186,6 +186,44 @@ class User {
 		$this->db->query("INSERT INTO `".MLS_PREFIX."friend_requests` SET ?u", $request_data);
 	}
 	
+	function acceptFriendRequest($userid){
+		$request = $this->db->getRow("SELECT `requestid` FROM `".MLS_PREFIX."friend_requests` WHERE `receiverid`=".$this->data->userid." AND `senderid`=".$userid." AND `status`=true");
+		if($request){
+			//userid1 is always smaller than userid2
+			$userids = $this->sortUserids($this->data->userid, $userid);
+			$request_data = array(
+				"userid1" => $userids['userid1'],
+				"userid2" => $userids['userid2']
+			);
+			$this->db->query("INSERT INTO `".MLS_PREFIX."friends` SET ?u", $request_data);
+			//remove friend request
+			$this->db->query("DELETE FROM `".MLS_PREFIX."friend_requests` WHERE requestid=$request->requestid");
+		}
+	}
+	
+	function isFriend($userid){
+		$userids = $this->sortUserids($this->data->userid, $userid);
+		if($this->db->getRow("SELECT `id` FROM `".MLS_PREFIX."friends` WHERE `userid1`=".$userids['userid1']." AND `userid2`=".$userids['userid2']))
+			return TRUE;
+		return FALSE;
+	}
+	
+	function sortUserids($userid1, $userid2){
+		if($userid1 > $userid2){
+			$temp = $userid2;
+			$userid2 = $userid1;
+			$userid1 = $temp;
+		}
+		return array(
+			"userid1" => $userid1,
+			"userid2" => $userid2
+		);
+	}
+	
+	function getFriendRequestsUserids(){
+		return $this->db->getAll("SELECT * FROM `".MLS_PREFIX."friend_requests` WHERE `receiverid`=".$this->data->userid." AND `status`=true");
+	}
+	
 	/**
 	 * checks if the provoded id is valid
 	 * @param  integer $userid id to be checked

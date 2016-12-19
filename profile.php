@@ -14,6 +14,10 @@ if(isset($_GET["request"])){
 	}
 }
 
+if(isset($_GET["accept_request"]) && $_GET["accept_request"] == true){
+	$user->acceptFriendRequest($_GET["u"]);
+}
+
 $page->title = "Profile of ". $options->html($u->username);
 
 
@@ -54,12 +58,17 @@ if($user->data->userid == $u->userid) {
 }
 else
 {
-	if ($user->isFriendRequestSent($u->userid)){
-		$addFriendButton = "<a class='btn btn-info' disabled>Friend Request Sent</a>";
-	} else if ($user->isFriendRequestCome($u->userid)){
-		$addFriendButton = "<a class='btn btn-primary'>Accept Friend Request</a>";
-	} else {
-		$addFriendButton = "<a href='$set->url/profile.php?u=$u->userid&request=$u->userid' class='btn btn-primary'>Add as Friend</a>";
+	if(!$user->isFriend($u->userid)){
+		if ($user->isFriendRequestSent($u->userid)){
+			$addFriendButton = "<a class='btn btn-info' disabled>Friend Request Sent</a>";
+		} else if ($user->isFriendRequestCome($u->userid)){
+			$addFriendButton = "<a href='$set->url/profile.php?u=$u->userid&accept_request=true' class='btn btn-primary'>Accept Friend Request</a>";
+		} else {
+			$addFriendButton = "<a href='$set->url/profile.php?u=$u->userid&request=$u->userid' class='btn btn-primary'>Add as Friend</a>";
+		}
+	}
+	else {
+		$addFriendButton = "<a class='btn btn-success' disabled>Friends</a>";
 	}
 }
 

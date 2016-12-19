@@ -23,10 +23,7 @@ echo "
 <div class=\"container\">
 
 <div class=\"hero-unit\">
-    <h1>Welcome ".$user->filter->username." </h1>
-    <p>
-        This is a template for a simple website. It includes a user system with signup, login, password recovery and many more. It's a perfect stratup for your projects.
-    </p>";
+    <h1>Welcome ".$user->filter->username." </h1>";
 if(!$user->islg()) {
     echo "<p>
         <a class=\"btn btn-primary btn-large\" href=\"$set->url/register.php\">Sign Up</a>

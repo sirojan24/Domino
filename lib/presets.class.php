@@ -23,29 +23,16 @@ class presets {
 
       $var[] = array("item",
                       array("href" => $set->url."/users_list.php",
-                            "name" => "User List",
+                            "name" => "Users",
                             "class" => $this->isActive("userslist")),
                       "id" => "userslist");
 
-      $var[] = array("item",
-                      array("href" => $set->url."/contact.php",
-                            "name" => "Contact",
-                            "class" => $this->isActive("contact")),
-                      "id" => "contact");
-
-      $var[] = array("dropdown",
-                      array(  0 => array("href" => "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=T9HU2KAF54EBE&lc=RO&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted",
-                                       "name" => "Donate",
-                                       "class" => 0),
-
-                              1 => array("href" => "https://github.com/ionutvmi/master-login-system",
-                                         "name" => "Fork Me On Github",
-                                         "class" => 0),
-                          ),
-                      "class" => 0,
-                      "style" => 0,
-                      "name" => "Extra",
-                      "id" => "extra");      
+      //$var[] = array("item",
+        //              array("href" => $set->url."/contact.php",
+        //                    "name" => "Contact",
+        //                    "class" => $this->isActive("contact")),
+        //              "id" => "contact");
+    
       if($user->group->type == 3) // we make it visible for admins only
       $var[] = array("item",
                       array("href" => $set->url."/admin",
@@ -53,10 +40,39 @@ class presets {
                             "class" => $this->isActive("adminpanel")),
                       "id" => "adminpanel");
 
-
-
-      // keep this always the last one or edit hrader.php:8
-      $var[] = array("dropdown",
+		$friendRequests = $user->getFriendRequestsUserids();
+		$notifications = array(); 
+		
+		$unseenRequest = 0;
+		foreach($friendRequests as $request) {
+			$sender = $user->grabData($request->senderid);
+			if(!$request->seen){
+				$unseenRequest++;
+			} 
+			array_push($notifications, 
+				array("href" => $set->url."/profile.php?u=".$request->senderid,
+                      "name" => "<i class=\"icon-user\"></i> Friend request from ".$sender->display_name,
+                      "class" => 0)
+			);
+		}
+		
+		if(count($friendRequests) == 0){
+			array_push($notifications, 
+				array("href" => '',
+                      "name" => "No Friend Requests",
+                      "class" => 0)
+			);
+		}
+		
+		$var[] = array("dropdown",
+                      $notifications,
+                      "class" => 0,
+                      "style" => 0,
+                      "name" => "Friend Requests (".$unseenRequest.")",
+                      "id" => "notificatons");
+					  
+		// keep this always the last one or edit hrader.php:8
+		$var[] = array("dropdown",
                       array(  array("href" => $set->url."/profile.php?u=".$user->data->userid,
                                        "name" => "<i class=\"icon-user\"></i> My Profile",
                                        "class" => 0),
@@ -75,11 +91,7 @@ class presets {
                       "style" => 0,
                       "name" => $user->filter->username,
                       "id" => "user");
-
-
-
-          
-
+					  
       return $var;
   }
 

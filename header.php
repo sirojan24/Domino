@@ -72,12 +72,21 @@ foreach ($page->navbar as $key => $v) {
             
             <a href='#' class='dropdown-toggle' data-toggle='dropdown'>".$v['name']." <b class='caret'></b></a>
             <ul class='dropdown-menu'>";
-        foreach ($v[1] as $k => $v) 
-            echo "<li".
-                
-                ($v['class'] ? " class='".$v['class']."'" : "").">
+        foreach ($v[1] as $k => $v) {
+			if($v['href'] != ''){
+				echo "<li".
+					
+					($v['class'] ? " class='".$v['class']."'" : "").">
 
-                <a href='".$v['href']."'>".$v['name']."</a></li>";                                
+					<a href='".$v['href']."'>".$v['name']."</a></li>";
+			} else {
+				echo "<li".
+					
+					($v['class'] ? " class='".$v['class']."'" : "").">
+
+					<a disabled>".$v['name']."</a></li>";
+			}			
+		}				
         echo "</ul></li>";
 
     }
