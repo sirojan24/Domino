@@ -80,7 +80,7 @@ echo "
 					<div class="span2" style="width: 15%;">
 						<ul class="unstyled">
 							<li>Links<li>
-							<li><a href="<?php echo $set->url;?>/contact.php">Contact</a></li>
+							<li><a href="#">Contact</a></li>
 						</ul>
 					</div>
 

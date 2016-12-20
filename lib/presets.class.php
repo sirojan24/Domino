@@ -19,11 +19,14 @@ class presets {
                             "name" => "Home",
                             "class" => $this->isActive("home")),
                       "id" => "home");
-
-
+	  
+	  $userlistName = "Find Friends";
+	  if($user->group->type == 3) // we make it visible for admins only
+		$userlistName = "Users";
+		
       $var[] = array("item",
                       array("href" => $set->url."/users_list.php",
-                            "name" => "Users",
+                            "name" => "Find Friends",
                             "class" => $this->isActive("userslist")),
                       "id" => "userslist");
 

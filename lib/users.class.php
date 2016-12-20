@@ -186,6 +186,10 @@ class User {
 		$this->db->query("INSERT INTO `".MLS_PREFIX."friend_requests` SET ?u", $request_data);
 	}
 	
+	function removeFriendRequest($userid){
+		$this->db->query("DELETE FROM `".MLS_PREFIX."friend_requests` WHERE `senderid`=".$this->data->userid." AND `receiverid`=".$userid);
+	}
+	
 	function acceptFriendRequest($userid){
 		$request = $this->db->getRow("SELECT `requestid` FROM `".MLS_PREFIX."friend_requests` WHERE `receiverid`=".$this->data->userid." AND `senderid`=".$userid." AND `status`=true");
 		if($request){
@@ -199,6 +203,11 @@ class User {
 			//remove friend request
 			$this->db->query("DELETE FROM `".MLS_PREFIX."friend_requests` WHERE requestid=$request->requestid");
 		}
+	}
+	
+	function removeFriend($userid){
+		$userids = $this->sortUserids($this->data->userid, $userid);
+		$this->db->query("DELETE FROM `".MLS_PREFIX."friends` WHERE `userid1`=".$userids['userid1']." AND `userid2`=".$userids['userid2']);
 	}
 	
 	function isFriend($userid){

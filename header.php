@@ -55,42 +55,44 @@ if(!$user->islg()) // if it's not logged in we hide the user menu
 <?php
 // we generate a simple menu this may need to be adjusted depending on your needs
 // but it should be ok for most common items
-foreach ($page->navbar as $key => $v) {
+if($user->islg()) { 
+	foreach ($page->navbar as $key => $v) {
 
-    if ($v[0] == 'item') {
-    
-        echo "<li".($v[1]['class'] ? " class='".$v[1]['class']."'" : "").">
-            <a href='".$v[1]['href']."'>".$v[1]['name']."</a></li>";
-    
-    } else if($v[0] == 'dropdown') {
+		if ($v[0] == 'item') {
+		
+			echo "<li".($v[1]['class'] ? " class='".$v[1]['class']."'" : "").">
+				<a href='".$v[1]['href']."'>".$v[1]['name']."</a></li>";
+		
+		} else if($v[0] == 'dropdown') {
 
-        echo "<li class='dropdown".
-            // extra classes 
-            ($v['class'] ? " ".$v['class'] : "")."'".
-            // extra style
-            ($v['style'] ? " style='".$v['style']."'" : "").">
-            
-            <a href='#' class='dropdown-toggle' data-toggle='dropdown'>".$v['name']." <b class='caret'></b></a>
-            <ul class='dropdown-menu'>";
-        foreach ($v[1] as $k => $v) {
-			if($v['href'] != ''){
-				echo "<li".
-					
-					($v['class'] ? " class='".$v['class']."'" : "").">
+			echo "<li class='dropdown".
+				// extra classes 
+				($v['class'] ? " ".$v['class'] : "")."'".
+				// extra style
+				($v['style'] ? " style='".$v['style']."'" : "").">
+				
+				<a href='#' class='dropdown-toggle' data-toggle='dropdown'>".$v['name']." <b class='caret'></b></a>
+				<ul class='dropdown-menu'>";
+			foreach ($v[1] as $k => $v) {
+				if($v['href'] != ''){
+					echo "<li".
+						
+						($v['class'] ? " class='".$v['class']."'" : "").">
 
-					<a href='".$v['href']."'>".$v['name']."</a></li>";
-			} else {
-				echo "<li".
-					
-					($v['class'] ? " class='".$v['class']."'" : "").">
+						<a href='".$v['href']."'>".$v['name']."</a></li>";
+				} else {
+					echo "<li".
+						
+						($v['class'] ? " class='".$v['class']."'" : "").">
 
-					<a disabled>".$v['name']."</a></li>";
-			}			
-		}				
-        echo "</ul></li>";
+						<a disabled>".$v['name']."</a></li>";
+				}			
+			}				
+			echo "</ul></li>";
 
-    }
-    
+		}
+		
+	}
 }
 
 echo "</ul>";

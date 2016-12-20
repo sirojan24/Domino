@@ -18,6 +18,14 @@ if(isset($_GET["accept_request"]) && $_GET["accept_request"] == true){
 	$user->acceptFriendRequest($_GET["u"]);
 }
 
+if(isset($_GET["remove_friend"]) && $_GET["remove_friend"] == true){
+	$user->removeFriend($_GET["u"]);
+}
+
+if(isset($_GET["remove_friend_request"]) && $_GET["remove_friend_request"] == true){
+	$user->removeFriendRequest($_GET["u"]);
+}
+
 $page->title = "Profile of ". $options->html($u->username);
 
 
@@ -58,17 +66,37 @@ if($user->data->userid == $u->userid) {
 }
 else
 {
-	if(!$user->isFriend($u->userid)){
-		if ($user->isFriendRequestSent($u->userid)){
-			$addFriendButton = "<a class='btn btn-info' disabled>Friend Request Sent</a>";
-		} else if ($user->isFriendRequestCome($u->userid)){
-			$addFriendButton = "<a href='$set->url/profile.php?u=$u->userid&accept_request=true' class='btn btn-primary'>Accept Friend Request</a>";
-		} else {
-			$addFriendButton = "<a href='$set->url/profile.php?u=$u->userid&request=$u->userid' class='btn btn-primary'>Add as Friend</a>";
+	if($user->group->type != 3) { // we make it invisible for admins only
+		if(!$user->isFriend($u->userid)){
+			if ($user->isFriendRequestSent($u->userid)){
+				$addFriendButton = "<div class='btn-group'>
+									<a class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Friend Request Sent <span class='caret'></span></a>
+									<ul class='dropdown-menu'>
+										<li>
+											<a href='$set->url/profile.php?u=$u->userid&remove_friend_request=true'>
+												<i class='icon-ban-circle'></i> Remove Friend Request
+											</a>
+										</li>
+									</ul>
+								</div>";
+			} else if ($user->isFriendRequestCome($u->userid)){
+				$addFriendButton = "<a href='$set->url/profile.php?u=$u->userid&accept_request=true' class='btn btn-primary'>Accept Friend Request</a>";
+			} else {
+				$addFriendButton = "<a href='$set->url/profile.php?u=$u->userid&request=$u->userid' class='btn btn-primary'>Add as Friend</a>";
+			}
 		}
-	}
-	else {
-		$addFriendButton = "<a class='btn btn-success' disabled>Friends</a>";
+		else {
+			$addFriendButton = "<div class='btn-group'>
+									<a class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Friends <span class='caret'></span></a>
+									<ul class='dropdown-menu'>
+										<li>
+											<a href='$set->url/profile.php?u=$u->userid&remove_friend=true'>
+												<i class='icon-ban-circle'></i> Remove Friend
+											</a>
+										</li>
+									</ul>
+								</div>";
+		}
 	}
 }
 
