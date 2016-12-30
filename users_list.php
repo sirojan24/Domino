@@ -67,10 +67,7 @@ if($total_results = $db->getRow("SELECT COUNT(*) as count FROM `".MLS_PREFIX."us
 
     $data = $db->getAll("SELECT * FROM `".MLS_PREFIX."users` ?p ORDER BY ?p LIMIT ?i,?i", $where, $order_by, $start, $perpage);
 
-
     $pagination = new pagination($total_results, $page_number, $perpage);
-
-
 
     foreach($data as $u) {
     	$content .= "<li class='span5 clearfix'>

@@ -29,7 +29,8 @@ if(!$user->islg()) {
         <a class=\"btn btn-primary btn-large\" href=\"$set->url/register.php\">Sign Up</a>
         <a class=\"btn btn-large\" href=\"$set->url/login.php\">Login</a>
     </p>";
-
+} else {
+	echo "<a class=\"btn btn-primary\" href=\"game\">Play Game</a>";
 }
 
 echo "</div></div> <!-- /container -->";

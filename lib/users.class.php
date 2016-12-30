@@ -243,6 +243,12 @@ class User {
 			return TRUE;
 		return FALSE;
 	}
+	
+	function existsAccount($userid, $password) {
+		if($this->db->getRow("SELECT `userid` FROM `".MLS_PREFIX."users` WHERE `userid` = $userid AND `password` = \"$password\" AND banned=false"))
+			return TRUE;
+		return FALSE;
+	}
 	/**
 	 * grabs the data about the user
 	 * @param  integer $userid the id to grab data for

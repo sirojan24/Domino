@@ -1,13 +1,5 @@
 <?php
 
-/**
- * MASTER LOGIN SYSTEM
- * @author Mihai Ionut Vilcu (ionutvmi@gmail.com)
- * June 2013
- *
- */
-
-
 session_start();
 
 $set = new stdClass(); // stores general settings
@@ -17,7 +9,7 @@ $page->navbar = array(); // stores the navbar items
 define("MLS_ROOT", dirname(dirname(__FILE__))); // the root path
 
 
-include "settings.php";
+include MLS_ROOT."/inc/settings.php";
 
 include MLS_ROOT."/lib/mysql.class.php";
 include MLS_ROOT."/lib/users.class.php";
